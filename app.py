@@ -43,8 +43,8 @@ ma.init_app(app)
 
 
 @app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
+def main():
+    return "<p>PrediData API!</p>"
 
 
 @app.route("/db")
