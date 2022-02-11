@@ -18,8 +18,11 @@ def shell_context_processor():
 
 app.shell_context_processor(shell_context_processor)
 
+uri = os.environ.get('DATABASE_URL')
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'development' == app.env
 app.secret_key = os.getenv('SECRET_KEY')
 

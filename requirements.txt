@@ -7,4 +7,5 @@ Flask-Migrate
 psycopg2
 Flask-Script==2.0.6
 flask_marshmallow==0.14.0
+marshmallow-sqlalchemy
 gunicorn
