@@ -1,0 +1,12 @@
+**/__pycache__/**
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+.venv/**
+venv/**
+.env
+.env.production
+app.db
+static/tracks/**
