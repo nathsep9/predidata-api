@@ -45,4 +45,4 @@ class OwnerSchema(ma.Schema):
 
 
 owner_schema = OwnerSchema()
-owners_schema = OwnerSchema(many=True)
+owners_schema = OwnerSchema(many=True, exclude=("properties",))

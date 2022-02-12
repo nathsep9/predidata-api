@@ -5,7 +5,7 @@ from database import db, getSession, migrate
 from ma import ma
 
 import models
-from models.Owner import Owner, owner_schema
+from models.Owner import Owner, owner_schema, owners_schema
 
 from models.Property import Property, property_schema
 
@@ -34,6 +34,10 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers',
                          'Content-Type,Authorization')
+    response.headers.add(
+        'Access-Control-Allow-Methods',
+        'GET, POST, DELETE, OPTIONS, PUT'
+    )
     return response
 
 
@@ -53,7 +57,7 @@ def db_test():
     return str(session.execute('SELECT 1+1').scalar())
 
 
-@app.route("/owner", methods=['POST'])
+@app.route("/owners", methods=['POST'])
 def create_owner():
     session = getSession()
 
@@ -71,11 +75,38 @@ def create_owner():
     return jsonify(owner_schema.dump(owner))
 
 
-@app.route("/owner/<int:owner_id>", methods=['GET'])
+@app.route("/owners", methods=['GET'])
+def get_owners():
+    session = getSession()
+
+    owners = session.query(Owner).all()
+
+    return jsonify(owners_schema.dump(owners))
+
+
+@app.route("/owners/<int:owner_id>", methods=['DELETE'])
+def delete_owner(owner_id):
+    session = getSession()
+
+    owner = session.query(Owner).get(owner_id)
+
+    session.delete(owner)
+    session.commit()
+
+    return jsonify({
+        'message': 'Owner deleted'
+    })
+
+
+@app.route("/owners/<int:owner_id>", methods=['GET'])
 def get_owner(owner_id):
     session = getSession()
 
     owner = session.query(Owner).get(owner_id)
+    if owner is None:
+        return jsonify({
+            'message': 'Owner not found'
+        }), 404
 
     return jsonify(owner_schema.dump(owner))
 
