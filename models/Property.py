@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, BigInteger
 
 from database import db
 from ma import ma
@@ -9,7 +9,7 @@ class Property(db.Model):
     id = Column(Integer, primary_key=True)
     address = Column(String(255), nullable=False)
     name = Column(String(255), nullable=False)
-    real_estate_registration = Column(Integer, nullable=False)
+    real_estate_registration = Column(BigInteger, unique=True, nullable=False)
     type_property = Column(Integer, nullable=False, default=1)
 
     def __repr__(self):
