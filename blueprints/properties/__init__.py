@@ -24,12 +24,11 @@ def create_property():
 
     session.add(property)
     session.commit()
-
-    owners_array = request_data['owners']
-
-    owners = session.query(Owner).filter(Owner.id.in_(owners_array)).all()
-    property.owners = owners
-    session.commit()
+    owners_array = request_data.get('owners', [])
+    if len(owners_array) > 0:
+        owners = session.query(Owner).filter(Owner.id.in_(owners_array)).all()
+        property.owners = owners
+        session.commit()
 
     return jsonify(property_schema.dump(property))
 

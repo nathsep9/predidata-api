@@ -17,3 +17,23 @@ flask db upgrade
 ## Running
 
 flask run
+
+## Docker
+
+configure the environment file as follows:
+
+```
+DB_DRIVER = 'postgresql'
+DB_HOST='db'
+DB_USER='postgres'
+DB_PASSWORD='postgres'
+DB_NAME='predidata'
+
+DB_PORT=5435
+```
+
+the image is raised with the following command:
+
+```
+docker-compose up
+```
