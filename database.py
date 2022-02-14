@@ -14,7 +14,7 @@ db = SQLAlchemy(
     model_class=BaseModel,
 )
 
-migrate = Migrate(db=db)
+migrate = Migrate(db=db, compare_type=True)
 
 
 def getSession() -> Union[Session, sessionmaker]: return db.session()

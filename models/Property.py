@@ -10,7 +10,7 @@ class Property(db.Model):
     address = Column(String(255), nullable=False)
     name = Column(String(255), nullable=False)
     real_estate_registration = Column(Integer, nullable=False)
-    type_property = Column(String(255), nullable=False)
+    type_property = Column(Integer, nullable=False, default=1)
 
     def __repr__(self):
         return '<Property %r>' % self.name

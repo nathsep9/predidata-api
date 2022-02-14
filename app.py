@@ -1,13 +1,13 @@
 import os
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 
 from database import db, getSession, migrate
 from ma import ma
 
 import models
-from models.Owner import Owner, owner_schema, owners_schema
 
 from models.Property import Property, property_schema
+from blueprints import ownersBp, propertiesBp
 
 app = Flask(__name__)
 
@@ -44,6 +44,8 @@ def after_request(response):
 db.init_app(app)
 migrate.init_app(app)
 ma.init_app(app)
+app.register_blueprint(ownersBp)
+app.register_blueprint(propertiesBp)
 
 
 @app.route("/")
@@ -55,60 +57,6 @@ def main():
 def db_test():
     session = getSession()
     return str(session.execute('SELECT 1+1').scalar())
-
-
-@app.route("/owners", methods=['POST'])
-def create_owner():
-    session = getSession()
-
-    request_data = request.get_json()
-
-    owner = Owner(
-        name=request_data['name'],
-        document=request_data['document'],
-        type_document=request_data['type_document']
-    )
-
-    session.add(owner)
-    session.commit()
-
-    return jsonify(owner_schema.dump(owner))
-
-
-@app.route("/owners", methods=['GET'])
-def get_owners():
-    session = getSession()
-
-    owners = session.query(Owner).all()
-
-    return jsonify(owners_schema.dump(owners))
-
-
-@app.route("/owners/<int:owner_id>", methods=['DELETE'])
-def delete_owner(owner_id):
-    session = getSession()
-
-    owner = session.query(Owner).get(owner_id)
-
-    session.delete(owner)
-    session.commit()
-
-    return jsonify({
-        'message': 'Owner deleted'
-    })
-
-
-@app.route("/owners/<int:owner_id>", methods=['GET'])
-def get_owner(owner_id):
-    session = getSession()
-
-    owner = session.query(Owner).get(owner_id)
-    if owner is None:
-        return jsonify({
-            'message': 'Owner not found'
-        }), 404
-
-    return jsonify(owner_schema.dump(owner))
 
 
 @app.route("/property/<int:property_id>", methods=['GET'])

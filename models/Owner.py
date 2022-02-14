@@ -15,8 +15,10 @@ class TypeDocument(enum.IntEnum):
 
 owners_properties = db.Table(
     'owners_properties',
-    db.Column('owner_id', db.Integer, db.ForeignKey('owners.id')),
-    db.Column('property_id', db.Integer, db.ForeignKey('properties.id'))
+    db.Column('owner_id', db.Integer, db.ForeignKey(
+        'owners.id'), nullable=False),
+    db.Column('property_id', db.Integer, db.ForeignKey(
+        'properties.id'), nullable=False),
 )
 
 
